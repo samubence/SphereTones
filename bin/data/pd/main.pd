@@ -1,0 +1,131 @@
+#N canvas 18 23 1440 799 10;
+#X obj 641 681 dac~;
+#X obj 643 327 catch~ out;
+#X msg 500 698 \; pd dsp 1 \;;
+#X obj 500 669 loadbang;
+#X text 80 260 first argument: < name of soundfile >;
+#X text 80 277 second argument: < number of polyphony >;
+#X text 496 743 turn on dsp;
+#X text 729 326 output of the objects can be catched;
+#X text 730 343 with the name "out";
+#X floatatom 368 192 5 0 0 0 - - -;
+#X text 81 295 optional third argument: < samplerate >;
+#X text 419 192 overall sampler volume;
+#X text 398 222 create polyphonic sample player;
+#X obj 80 328 r pitchVol1;
+#X obj 84 145 r pitchVol0;
+#X obj 78 380 r pitchVol2;
+#X obj 77 435 r pitchVol3;
+#X obj 850 672 r startRec;
+#X obj 891 756 r stopRec;
+#X msg 850 722 open \$1 \, start;
+#X msg 892 778 stop;
+#X obj 896 910 writesf~ 2;
+#X obj 850 697 unpack s;
+#X obj 602 508 *~;
+#X obj 717 574 *~;
+#X obj 753 470 patches/rjLib/e_platereverb myReverb;
+#X obj 1048 244 loadbang;
+#X obj 772 579 *~;
+#N canvas 312 105 781 670 presets 0;
+#X obj -1 30 inlet;
+#X obj -1 68 route default large large_noexcursion huge huge_noexcursion
+tadada;
+#X msg -1 134 predelay 0 \, bandwidth 22050 \, damping 22050 \, decay
+0.5 \, input_diffusion1 0.75 \, input_diffusion2 0.625 \, decay_diffusion1
+0.7 \, decay_diffusion2 0.5 \, excursion 0.53761 \;;
+#X msg 135 274 predelay 0 \, bandwidth 10000 \, damping 4637 \, decay
+0.98 \, input_diffusion1 0.685 \, input_diffusion2 0.779 \, decay_diffusion1
+0.74 \, decay_diffusion2 0.68 \, excursion 0 \,;
+#X msg 67 197 predelay 0 \, bandwidth 10000 \, damping 4637 \, decay
+0.98 \, input_diffusion1 0.685 \, input_diffusion2 0.779 \, decay_diffusion1
+0.74 \, decay_diffusion2 0.68 \, excursion 0.53761 \,;
+#X msg 206 350 predelay 10 \, bandwidth 10000 \, damping 4637 \, decay
+0.99 \, input_diffusion1 0.685 \, input_diffusion2 0.779 \, decay_diffusion1
+0.889 \, decay_diffusion2 0.84 \, excursion 0.53761 \;;
+#X msg 340 525 predelay 216.535 \, bandwidth 22050 \, damping 22050
+\, decay 0.677165 \, input_diffusion1 0.850394 \, input_diffusion2
+0.92126 \, decay_diffusion1 0.80315 \, decay_diffusion2 0.818898 \,
+excursion 0.11811 \;;
+#X msg 272 437 predelay 10 \, bandwidth 10000 \, damping 4637 \, decay
+0.99 \, input_diffusion1 0.685 \, input_diffusion2 0.779 \, decay_diffusion1
+0.889 \, decay_diffusion2 0.84 \, excursion 0 \;;
+#X obj -1 587 s myPresets;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 4 0;
+#X connect 1 2 3 0;
+#X connect 1 3 5 0;
+#X connect 1 4 7 0;
+#X connect 1 5 6 0;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 8 0;
+#X connect 6 0 8 0;
+#X connect 7 0 8 0;
+#X restore 1097 394 pd presets;
+#X msg 1100 275 default;
+#X obj 969 241 r myPresets;
+#X msg 985 278 dry 0.33;
+#X obj 758 502 r reverbfx;
+#X obj 627 436 r rawfx;
+#X obj 627 479 line~;
+#X msg 628 458 \$1 5;
+#X obj 760 547 line~;
+#X msg 758 525 \$1 5;
+#X obj 77 495 r pitchVol4;
+#X obj 75 547 r pitchVol5;
+#X obj 74 602 r pitchVol6;
+#X obj 76 655 r pitchVol7;
+#X obj 74 707 r pitchVol8;
+#X obj 84 221 patches/createPoly ../sounds/0000.wav 7 22050;
+#X obj 81 351 patches/createPoly ../sounds/0001.wav 7 22050;
+#X obj 79 403 patches/createPoly ../sounds/0002.wav 7 22050;
+#X obj 78 458 patches/createPoly ../sounds/0003.wav 7 22050;
+#X obj 78 518 patches/createPoly ../sounds/0004.wav 7 22050;
+#X obj 76 570 patches/createPoly ../sounds/0005.wav 7 22050;
+#X obj 75 625 patches/createPoly ../sounds/0006.wav 7 22050;
+#X obj 77 678 patches/createPoly ../sounds/0007.wav 7 22050;
+#X obj 75 730 patches/createPoly ../sounds/0008.wav 7 22050;
+#X connect 1 0 23 0;
+#X connect 1 0 25 0;
+#X connect 1 0 25 1;
+#X connect 3 0 2 0;
+#X connect 9 0 43 1;
+#X connect 13 0 44 0;
+#X connect 14 0 43 0;
+#X connect 15 0 45 0;
+#X connect 16 0 46 0;
+#X connect 17 0 22 0;
+#X connect 18 0 20 0;
+#X connect 19 0 21 0;
+#X connect 20 0 21 0;
+#X connect 22 0 19 0;
+#X connect 23 0 0 0;
+#X connect 23 0 0 1;
+#X connect 23 0 21 0;
+#X connect 23 0 21 1;
+#X connect 24 0 0 0;
+#X connect 24 0 21 0;
+#X connect 25 0 24 0;
+#X connect 25 1 27 0;
+#X connect 26 0 31 0;
+#X connect 26 0 29 0;
+#X connect 27 0 21 1;
+#X connect 27 0 0 1;
+#X connect 29 0 28 0;
+#X connect 30 0 25 2;
+#X connect 31 0 25 2;
+#X connect 32 0 37 0;
+#X connect 33 0 35 0;
+#X connect 34 0 23 1;
+#X connect 35 0 34 0;
+#X connect 36 0 27 1;
+#X connect 36 0 24 1;
+#X connect 37 0 36 0;
+#X connect 38 0 47 0;
+#X connect 39 0 48 0;
+#X connect 40 0 49 0;
+#X connect 41 0 50 0;
+#X connect 42 0 51 0;

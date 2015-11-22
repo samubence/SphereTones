@@ -1,0 +1,6 @@
+set solib-search-path /Users/bnc/Documents/Android_OF/of_v0.8.4_android_release/apps/bnc/SphereTones/obj/local/x86:/Users/bnc/Documents/Android_OF/of_v0.8.4_android_release/apps/bnc/SphereTones/libs/x86
+directory /Users/bnc/Documents/Android_OF/android-ndk-r9b/platforms/android-17/arch-arm/usr/include
+directory /Users/bnc/Documents/Android_OF/of_v0.8.4_android_release/apps/bnc/SphereTones/src
+directory /Users/bnc/Documents/Android_OF/android-ndk-r9b/sources/cxx-stl/system
+directory /Users/bnc/Documents/Android_OF/of_v0.8.4_android_release/apps/bnc/SphereTones/libs/x86
+

@@ -10,16 +10,12 @@
  -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DUSEAPI_DUMMY -DPD -DLIBPD_EXTRA
 
  TODO:
-- add seq-recording mode
- 
- bug:
-- zoom end, screen drags
-- getavailablespacelong, not long... 18 api
+
  */
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    //ofSetLogLevel(OF_LOG_SILENT);
+    ofSetLogLevel(OF_LOG_SILENT);
     
     ofLogNotice() << "SphereTones::ofApp::setup";
     ofBackground(255, 255, 255);

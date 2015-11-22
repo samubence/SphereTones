@@ -6,11 +6,10 @@ The body of the instrument is the interface itself. The graphic is minimalistic 
 
 ## credits
 
-www.binaura.net
+[binaura](http://www.binaura.net/)
 software design: Bence Samu
-audio programming: Agoston Nagy
+audio programming: Agoston Nagy [polySample](https://github.com/stc/polySample)
 desinging the logo and slides: Dora Siraly
 
 The software was developed using [openFrameworks](http://www.openframeworks.cc/)
 The soundengine has been replaced with [LibPD](https://github.com/libpd) using this of addon: [ofxPd](https://github.com/danomatika/ofxPd)
-

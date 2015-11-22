@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cc.openframeworks.SphereTones"
-    android:versionCode="1"
+    android:versionCode="5"
     android:versionName="1.3" 
     android:installLocation="preferExternal">
 
-    <uses-feature android:glEsVersion="0x00020000"></uses-feature>
     <uses-sdk android:targetSdkVersion="16" android:minSdkVersion="16"></uses-sdk>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>

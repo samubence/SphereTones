@@ -57,7 +57,7 @@ void InfoScreen::setup()
     
     float buttonSize = 60 * SphereTones::resolutionScale;
     float buttonOffsetX = -10 * SphereTones::resolutionScale;
-    float buttonOffsetY = 25 * SphereTones::resolutionScale;
+    float buttonOffsetY = 15 * SphereTones::resolutionScale;
     button.set(buttonOffsetX, buttonOffsetY, buttonSize, buttonSize);
     
     closing = false;
@@ -141,6 +141,5 @@ void InfoScreen::drawButton(ofRectangle view)
     ofSetColor(60, 50);
     ofNoFill();
     ofCircle(button.getCenter(), radius);
-
 }
 

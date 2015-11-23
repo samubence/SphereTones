@@ -13,39 +13,7 @@ InfoScreen::~InfoScreen()
 
 void InfoScreen::setup()
 {
-    for (int i = 0; i < 5; i++)
-    {
-        ofTexture * img = new ofTexture();
-        bool loaded = false;
-        if (i == 0)
-        {
-            // try to load the start screen from our server
-            string url = "http://www.binaura.net/bnc/SphereTones/info_online.png";
-            ofHttpResponse r = ofLoadURL(url);
-            ofPixels pix;
-            ofLoadImage(pix, r.data);
-            if (pix.isAllocated())      // check if the pixels were loaded succesfully
-            {
-                loaded = true;
-                img->allocate(pix);
-                img->loadData(pix);
-            }
-        }
-        
-        if (!loaded)    // if we failed to load use the stored ones
-        {
-            ofLoadImage(*img, "info_" + ofToString(i) + ".png");
-        }
-        
-        slides.push_back(img);
-
-        if (i == 0)
-        {
-            float imageRatio = img->getWidth() / (float)img->getHeight();
-            height = ofGetHeight();
-            width = height * imageRatio;
-        }
-    }
+    loadTextures();
 
     pSlide = currentSlide = slides.begin();
     slideInterval = 1000 * 5;
@@ -54,13 +22,64 @@ void InfoScreen::setup()
 
     damp = 0.95;
     openPct = 1;
-    
+
     float buttonSize = 60 * SphereTones::resolutionScale;
     float buttonOffsetX = -10 * SphereTones::resolutionScale;
     float buttonOffsetY = 15 * SphereTones::resolutionScale;
     button.set(buttonOffsetX, buttonOffsetY, buttonSize, buttonSize);
-    
+
     closing = false;
+}
+
+void InfoScreen::loadTextures()
+{
+	unloadTextures();
+
+	for (int i = 0; i < 5; i++)
+	{
+		ofTexture * img = new ofTexture();
+
+		ofLoadImage(*img, "info_" + ofToString(i) + ".png");
+		bool loaded = false;
+
+		if (i == 0)
+		{
+			// try to load the start screen from our server
+			string url = "http://www.binaura.net/bnc/SphereTones/info_online.png";
+			ofHttpResponse r = ofLoadURL(url);
+			ofPixels pix;
+			ofLoadImage(pix, r.data);
+			if (pix.isAllocated())      // check if the pixels were loaded succesfully
+			{
+				loaded = true;
+				img->allocate(pix);
+				img->loadData(pix);
+			}
+		}
+
+		if (!loaded)    // if we failed to load use the stored ones
+		{
+			ofLoadImage(*img, "info_" + ofToString(i) + ".png");
+		}
+
+		slides.push_back(img);
+
+		if (i == 0)
+		{
+			float imageRatio = img->getWidth() / (float)img->getHeight();
+			height = ofGetHeight();
+			width = height * imageRatio;
+		}
+	}
+}
+
+void InfoScreen::unloadTextures()
+{
+	for (int i = 0; i < slides.size(); i++)
+		{
+			delete slides[i];
+		}
+	slides.clear();
 }
 
 bool InfoScreen::onTouch(ofVec2f p)

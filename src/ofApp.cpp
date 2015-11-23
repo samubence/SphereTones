@@ -268,7 +268,7 @@ void ofApp::stop()
 bool ofApp::backPressed()
 {
     ofLogNotice() << "SphereTones::ofApp::backPressed";
-    return true;
+    return false;
 }
 
 void ofApp::unloadTextures()

@@ -722,6 +722,8 @@ void SphereTones::loadTextures()
     texMask.allocate(res, res, GL_LUMINANCE);
     texMask.loadData(pixels, res, res, GL_LUMINANCE);
     delete pixels;
+
+    infoScreen.loadTextures();
 }
 
 void SphereTones::unloadTextures()
@@ -730,5 +732,6 @@ void SphereTones::unloadTextures()
     texSphereOutside.clear();
     texMask.clear();
     texRec.clear();
+    infoScreen.unloadTextures();
 }
 

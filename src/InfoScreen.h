@@ -11,6 +11,8 @@ public:
     ~InfoScreen();
     
     void setup();
+    void loadTextures();
+    void unloadTextures();
     bool onTouch(ofVec2f p);
     void update();
     void draw();

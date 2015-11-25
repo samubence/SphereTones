@@ -138,6 +138,7 @@ void GestureDetector::onRelease(int id, float x, float y)
     {
         if (id == touchA->id)
         {
+            listener->onRelease(ofVec2f(x, y));
         	delete touchA;
         	touchA = NULL;
         }

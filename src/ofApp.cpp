@@ -9,11 +9,18 @@
  pd flags:
  -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DUSEAPI_DUMMY -DPD -DLIBPD_EXTRA
 
+ TODO:
+- ask on start record
+- ask on reset
+ 
+ bug:
+- zoom end, screen drags
+-
  */
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    ofSetLogLevel(OF_LOG_SILENT);
+    //ofSetLogLevel(OF_LOG_SILENT);
     
     ofLogNotice() << "SphereTones::ofApp::setup";
     ofBackground(255, 255, 255);

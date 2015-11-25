@@ -128,6 +128,8 @@ public:
     static float mmToPixels;
     
     static float masterVolume;
+    
+    static float version;
 };
 
 #endif

@@ -36,6 +36,7 @@ float SphereTones::radialTextRadius = 8; // mm
 float SphereTones::maxNumOfSphereElements = 23;
 
 float SphereTones::masterVolume = 1;
+float SphereTones::version = 1.5;
 
 SphereTones::SphereTones()
 {
@@ -391,16 +392,19 @@ void SphereTones::onTouch(ofVec2f p)
             }
             recording ^= true;
         }
-        else if (level == ZOOM_MID)
+        else if (level != ZOOM_CLOSE)   // cannot start sample selector in ZOOM_CLOSE
 		{
-            bool isElementUnder = false;
+            bool canStartSampleSelector = true;
             
+            // filter interaction with the spheres
             if (currentSphere)
             {
-                if (level == ZOOM_MID) isElementUnder = currentSphere->getElementByBall(p, grabDistanceMultiply);
+                if (level == ZOOM_MID && currentSphere->getElementByBall(p, grabDistanceMultiply) )
+                {
+                    canStartSampleSelector = false;     // only when are away from ball area
+                }
             }
-            
-            if (!isElementUnder)
+            if (canStartSampleSelector)
             {
                 //
                 // SAMPLE SELECTOR
@@ -624,8 +628,7 @@ void SphereTones::drawLine(ofVec2f p1, ofVec2f p2, float width)
 
 void SphereTones::save()
 {
-    float version = 1.3;
-	ofLogNotice() << "SphereTones::save()";
+ 	ofLogNotice() << "SphereTones::save()";
     string fileName = "sphereTones.dat";
     ofXml xmlSphereTones;
     xmlSphereTones.addChild("SphereTones");
@@ -665,20 +668,22 @@ void SphereTones::load()
     if (xml.load(fileName))
     {
         xml.setTo("SphereTones");
-
+        float version = xml.getValue<float>("version");
+        ofLogNotice() << "SphereTones::load::version: " << version;
         xml.setTo("tView");
-
-        float tx = xml.getValue<float>("trx");
-        float ty = xml.getValue<float>("try");
-        float sc = xml.getValue<float>("scale");
-
-        tView.t_translate.set(tx, ty);
-        tView.t_sc = sc;
-        
-        tView.setSmooth(0); // change transformation instantly
-        tView.update();
-        tView.setSmooth();
-
+        if (version > 1.3)
+        {
+            float tx = xml.getValue<float>("trx");
+            float ty = xml.getValue<float>("try");
+            float sc = xml.getValue<float>("scale");
+            
+            tView.t_translate.set(tx, ty);
+            tView.t_sc = sc;
+            
+            tView.setSmooth(0); // change transformation instantly
+            tView.update();
+            tView.setSmooth();
+        }
         xml.setToParent();
         
         xml.setTo("spheres");

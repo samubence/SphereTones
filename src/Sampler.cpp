@@ -72,7 +72,7 @@ string Sampler::getFileName()
 
 void Sampler::play(int id, float volume, float speed)
 {
-    if (numOfSamples == 0 || id < 0) return;
+    if (numOfSamples == 0 || id < 0 || volume <= 0) return;
     id = id % numOfSamples;//(int)ofClamp(id, 0, numOfSamples);
     volume = ofMap(volume, 0, 1, 0, MAX_VOLUME, true);
     speed = ofClamp(speed, MIN_SPEED, MAX_SPEED);

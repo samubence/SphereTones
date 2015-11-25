@@ -65,5 +65,7 @@ public:
     void mouseDragged(int x, int y, int button);
     void mousePressed(int x, int y, int button);
     void mouseReleased(int x, int y, int button);
-#endif
+#endif    
+    
+    ofTexture texHand;
 };

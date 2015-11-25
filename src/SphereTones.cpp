@@ -54,8 +54,8 @@ SphereTones::~SphereTones()
 
 void SphereTones::resetView()
 {
-    //float s = 100000;    // a very large space
-    tView.setup(viewScaleMin, viewScaleMax);//, ofRectangle(-s / 2., -s / 2., s, s));
+    float s = 100000;    // a very large space
+    tView.setup(viewScaleMin, viewScaleMax, ofRectangle(-s / 2., -s / 2., s, s));
     tView.zoom(ofVec2f(ofGetWidth() / 2., ofGetHeight() / 2.), 0.3);
 }
 
@@ -210,7 +210,6 @@ void SphereTones::draw()
     }
   
     infoScreen.draw();
-
 }
 
 /*
@@ -370,7 +369,7 @@ void SphereTones::onTouch(ofVec2f p)
             currentSphere = getSphere(p, grabDistanceMultiply, 0, 0);
         }
         
-        if (currentSphere != NULL)
+        if (currentSphere)
         {
             currentSphere->onTouch(p);
         }
@@ -392,14 +391,24 @@ void SphereTones::onTouch(ofVec2f p)
             }
             recording ^= true;
         }
-        else
+        else if (level == ZOOM_MID)
 		{
-			//
-			// SAMPLE SELECTOR
-			//
-			selecting = true;
-			selectorTimer.start(selectorOpenInterval);
-			sampleSelector.open(screenTouchPoint);
+            bool isElementUnder = false;
+            
+            if (currentSphere)
+            {
+                if (level == ZOOM_MID) isElementUnder = currentSphere->getElementByBall(p, grabDistanceMultiply);
+            }
+            
+            if (!isElementUnder)
+            {
+                //
+                // SAMPLE SELECTOR
+                //
+                selecting = true;
+                selectorTimer.start(selectorOpenInterval);
+                sampleSelector.open(screenTouchPoint);
+            }
 		}
     }
 }
@@ -625,10 +634,9 @@ void SphereTones::save()
     ofXml xmlTView;
     xmlTView.addChild("tView");
     xmlTView.setTo("tView");
-    xmlTView.addValue("centerx", tView.transformPoints.p1.x);
-    xmlTView.addValue("centery", tView.transformPoints.p1.y);
-    xmlTView.addValue("leftx", tView.transformPoints.p2.x);
-    xmlTView.addValue("lefty", tView.transformPoints.p2.y);
+    xmlTView.addValue("trx", tView.t_translate.x);
+    xmlTView.addValue("try", tView.t_translate.y);
+    xmlTView.addValue("scale", tView.t_sc);
     xmlSphereTones.addXml(xmlTView);
     
     ofXml xmlSpheres;
@@ -660,14 +668,13 @@ void SphereTones::load()
 
         xml.setTo("tView");
 
-        float cx = xml.getValue<float>("centerx");
-        float cy = xml.getValue<float>("centery");
-        float lx = xml.getValue<float>("leftx");
-        float ly = xml.getValue<float>("lefty");
+        float tx = xml.getValue<float>("trx");
+        float ty = xml.getValue<float>("try");
+        float sc = xml.getValue<float>("scale");
+
+        tView.t_translate.set(tx, ty);
+        tView.t_sc = sc;
         
-        tView.transformPoints.p1.set(cx, cy);
-        tView.transformPoints.p2.set(lx, ly);
-        tView.calcTranstormation();
         tView.setSmooth(0); // change transformation instantly
         tView.update();
         tView.setSmooth();
@@ -722,16 +729,14 @@ void SphereTones::loadTextures()
     texMask.allocate(res, res, GL_LUMINANCE);
     texMask.loadData(pixels, res, res, GL_LUMINANCE);
     delete pixels;
-
-    infoScreen.loadTextures();
 }
 
 void SphereTones::unloadTextures()
 {
+    infoScreen.unloadTextures();
     texSphereInside.clear();
     texSphereOutside.clear();
     texMask.clear();
     texRec.clear();
-    infoScreen.unloadTextures();
 }
 

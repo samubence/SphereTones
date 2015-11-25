@@ -9,8 +9,6 @@
  pd flags:
  -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DUSEAPI_DUMMY -DPD -DLIBPD_EXTRA
 
- TODO:
-
  */
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -22,8 +20,6 @@ void ofApp::setup()
     FontTools::loadFont("verdana.ttf", 64);    
 
     init();
-    
-    //ofHideCursor();
 }
 
 void ofApp::exit()
@@ -171,17 +167,6 @@ void ofApp::mouseScroll(int device, int axis, int delta)
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
-    /*
-    if (key == 's')
-    {
-        ofSaveScreen(ofGetTimestampString() + ".png");
-    }
-    if (key == 'f')
-    {
-        ofToggleFullscreen();
-        ofHideCursor();
-    }*/
 }
 
 //--------------------------------------------------------------
@@ -297,9 +282,7 @@ bool ofApp::menuItemSelected(string menu_id_str)
 
 void ofApp::audioReceived(float * input, int bufferSize, int nChannels)
 {
-
     Sampler::audioReceived(input, bufferSize, nChannels);
-
 }
 
 //--------------------------------------------------------------

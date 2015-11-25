@@ -15,9 +15,9 @@ void GestureDetector::setup(GestureListener * _listener) {
     dragging = false;
     oTouchDistance = 0;
 #ifdef TARGET_ANDROID
-    minDragDistance = 20;
+    minDragDistance = 10;
 #else
-    minDragDistance = 5;
+    minDragDistance = 2;
 #endif
 }
 ;
@@ -110,7 +110,8 @@ void GestureDetector::onDrag(int id, float x, float y)
         
         float touchDistance = touchA->distance(*touchB);
         
-        if (touchDistance > minDragDistance) {
+        //if (touchDistance > minDragDistance)
+        {
             listener->onZoom(touchCenter, touchDistance / oTouchDistance);
             oTouchDistance = touchDistance;
         }

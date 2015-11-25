@@ -11,12 +11,13 @@ public:
     ~InfoScreen();
     
     void setup();
-    void loadTextures();
-    void unloadTextures();
     bool onTouch(ofVec2f p);
     void update();
     void draw();
     void drawButton(ofRectangle view);
+    void urlResponse(ofHttpResponse & e);
+    void loadTextures();
+    void unloadTextures();
     float width, height;
     
     float openPct;

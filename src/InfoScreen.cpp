@@ -8,7 +8,7 @@ InfoScreen::InfoScreen()
 
 InfoScreen::~InfoScreen()
 {
-
+    ofUnregisterURLNotification(this);
 }
 
 void InfoScreen::setup()
@@ -22,64 +22,45 @@ void InfoScreen::setup()
 
     damp = 0.95;
     openPct = 1;
-
+    
     float buttonSize = 60 * SphereTones::resolutionScale;
-    float buttonOffsetX = -10 * SphereTones::resolutionScale;
+    float buttonOffsetX = -20 * SphereTones::resolutionScale;
     float buttonOffsetY = 15 * SphereTones::resolutionScale;
     button.set(buttonOffsetX, buttonOffsetY, buttonSize, buttonSize);
-
+    
     closing = false;
 }
 
 void InfoScreen::loadTextures()
 {
-	unloadTextures();
-
-	for (int i = 0; i < 5; i++)
-	{
-		ofTexture * img = new ofTexture();
-
-		ofLoadImage(*img, "info_" + ofToString(i) + ".png");
-		bool loaded = false;
-
-		if (i == 0)
-		{
-			// try to load the start screen from our server
-			string url = "http://www.binaura.net/bnc/SphereTones/info_online.png";
-			ofHttpResponse r = ofLoadURL(url);
-			ofPixels pix;
-			ofLoadImage(pix, r.data);
-			if (pix.isAllocated())      // check if the pixels were loaded succesfully
-			{
-				loaded = true;
-				img->allocate(pix);
-				img->loadData(pix);
-			}
-		}
-
-		if (!loaded)    // if we failed to load use the stored ones
-		{
-			ofLoadImage(*img, "info_" + ofToString(i) + ".png");
-		}
-
-		slides.push_back(img);
-
-		if (i == 0)
-		{
-			float imageRatio = img->getWidth() / (float)img->getHeight();
-			height = ofGetHeight();
-			width = height * imageRatio;
-		}
-	}
+    float scale = 0.9;
+    for (int i = 0; i < 5; i++)
+    {
+        ofTexture * img = new ofTexture();
+        ofLoadImage(*img, "info_" + ofToString(i) + ".png");
+        slides.push_back(img);
+        
+        if (i == 0)
+        {
+            float imageRatio = img->getWidth() / (float)img->getHeight();
+            height = ofGetHeight() * scale;
+            width = height * imageRatio;
+        }
+    }
+    
+    ofRegisterURLNotification(this);
+    string url = "http://www.binaura.net/bnc/SphereTones/info_online.png";
+    ofLoadURLAsync(url);
 }
 
 void InfoScreen::unloadTextures()
 {
-	for (int i = 0; i < slides.size(); i++)
-		{
-			delete slides[i];
-		}
-	slides.clear();
+    ofUnregisterURLNotification(this);
+    for (int i = 0; i < slides.size(); i++)
+    {
+        delete slides[i];
+    }
+    slides.clear();
 }
 
 bool InfoScreen::onTouch(ofVec2f p)
@@ -118,7 +99,7 @@ void InfoScreen::update()
         currentAlpha = 0;
     }
 
-    currentAlpha = ofClamp(currentAlpha + 0.05, 0, 1);
+    currentAlpha = ofClamp(currentAlpha + 0.05, 0, 1);    
 }
 
 void InfoScreen::draw()
@@ -160,5 +141,23 @@ void InfoScreen::drawButton(ofRectangle view)
     ofSetColor(60, 50);
     ofNoFill();
     ofCircle(button.getCenter(), radius);
+
+}
+
+void InfoScreen::urlResponse(ofHttpResponse &e)
+{
+    ofLogNotice() << "InfoScreen::urlResponse status: " << e.status;
+    ofPixels pix;
+    ofLoadImage(pix, e.data);
+    if (pix.isAllocated() && slides.size())      // check if the pixels were loaded succesfully
+    {
+        ofTexture * t = slides[0];
+        t->clear();
+        t->allocate(pix);
+        t->loadData(pix);
+        currentSlide = slides.begin();
+        slideStarted = ofGetElapsedTimeMillis();
+    }
+    ofUnregisterURLNotification(this);
 }
 

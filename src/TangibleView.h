@@ -20,7 +20,7 @@ public:
         scaleMax = _scaleMax;
     };
 
-    void setSmooth(float _damp = 0.05f)
+    void setSmooth(float _damp = 0.09f)
     {
         damp = _damp;
     };

@@ -35,11 +35,11 @@ int Sampler::getNumOfSamples()
     return numOfSamples;
 }
 
-void Sampler::updateFilters(float pct0, float pct1, float pct2)
+void Sampler::updateFilters(float pct0, float pct1)
 {
     //Sampler::pd.sendFloat( "delayfx", pct0 );
-    Sampler::pd.sendFloat( "rawfx", ofClamp(pct0 + pct1, 0, 1) );
-    Sampler::pd.sendFloat( "reverbfx", pct2 );
+    Sampler::pd.sendFloat( "rawfx", pct0 );
+    Sampler::pd.sendFloat( "reverbfx", pct1);
 }
 
 void Sampler::startRecording(string _fileName)
@@ -74,7 +74,7 @@ void Sampler::play(int id, float volume, float speed)
 {
     if (numOfSamples == 0 || id < 0 || volume <= 0) return;
     id = id % numOfSamples;//(int)ofClamp(id, 0, numOfSamples);
-    volume = ofMap(volume, 0, 1, 0, MAX_VOLUME, true);
+    volume = ofClamp(volume, 0, 1);
     speed = ofClamp(speed, MIN_SPEED, MAX_SPEED);
     List mList;
     mList.addFloat(speed);

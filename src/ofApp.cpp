@@ -3,28 +3,22 @@
 #include "Sampler.h"
 
 /*
- change : ofFmodSoundPlayer.cpp
- FMOD_System_Init(sys, 512, FMOD_INIT_NORMAL, NULL);  //do we want just 32 channels?
- 
- pd flags:
+ compiler flags for PD:
  -DHAVE_UNISTD_H -DHAVE_ALLOCA_H -DUSEAPI_DUMMY -DPD -DLIBPD_EXTRA
 
  TODO:
-- ask on start record
-- ask on reset
- 
+
  bug:
-- zoom end, screen drags
--
+
  */
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    //ofSetLogLevel(OF_LOG_SILENT);
+    ofSetLogLevel(OF_LOG_SILENT);
     
     ofLogNotice() << "SphereTones::ofApp::setup";
     ofBackground(255, 255, 255);
-    FontTools::loadFont("verdana.ttf", 64);    
+    FontTools::loadFont("Roboto-Light.ttf", 64);    
 
     init();
 }
@@ -100,12 +94,11 @@ void ofApp::shareAudio(string path, string fileName)
 	jmethodID method = env->GetStaticMethodID(javaClass, "shareAudio", "(Ljava/lang/String;Ljava/lang/String;)V");
 	env->CallStaticVoidMethod(javaClass, method, jstrPath, jstrFileName);
 #endif
-	gDetector.releaseAll();
 }
 
 void ofApp::audioSavedEvent(string & e)
 {
-	ofLogNotice() << e;
+	ofLogNotice() << "SphereTones::ofApp::audioSavedEvent: " << e;
 	shareAudio(ofToDataPath("pd"), e);
 }
 
@@ -114,9 +107,9 @@ void ofApp::update()
 {
     sphereTones.update();
 
-    if (ofGetFrameNum() % 60 == 0)	// check free disk space when recording
+    if (ofGetFrameNum() % 60 == 0)	// periodically check free disk space when recording
     {
-		if (Sampler::isRecording() && getFreeSpace() < 1)
+		if (Sampler::isRecording() && getFreeSpace() < 1)   // if we have less than 1MB, stop recording
 		{
 			sphereTones.recording = false;
 			Sampler::stopRecording();
@@ -132,34 +125,39 @@ void ofApp::draw()
 
 void ofApp::onTouch(ofVec2f p)
 {
+	ofLogNotice() << "SphereTones::ofApp::onTouch";
     sphereTones.onTouch(p);
 }
 
 void ofApp::onUndoDrag()
 {
+	ofLogNotice() << "SphereTones::ofApp::onUndoDrag";
     sphereTones.onUndoDrag();
 }
 
 void ofApp::onDrag(ofVec2f p)
 {
+	ofLogNotice() << "SphereTones::ofApp::onDrag";
     sphereTones.onDrag(p);
 }
 
 void ofApp::onRelease(ofVec2f p)
 {
+	ofLogNotice() << "SphereTones::ofApp::onRelease";
     sphereTones.onRelease(p);
 }
 
 void ofApp::onPan(ofVec2f p)
 {
+	ofLogNotice() << "SphereTones::ofApp::onPan";
     sphereTones.onPan(p);
 }
 
 void ofApp::onZoom(ofVec2f p, float amount)
 {
+	ofLogNotice() << "SphereTones::ofApp::onZoom";
     sphereTones.onZoom(p, amount);
 }
-
 
 //--------------------------------------------------------------
 
@@ -168,7 +166,6 @@ void ofApp::onZoom(ofVec2f p, float amount)
 void ofApp::mouseScroll(int device, int axis, int delta)
 {
     float scrollspeed = 0.001;
-    
     sphereTones.onZoom(ofVec2f(ofGetMouseX(), ofGetMouseY()),  1 + delta * scrollspeed);
 }
 
@@ -248,6 +245,7 @@ void ofApp::resume()
 void ofApp::pause()
 {
     ofLogNotice() << "SphereTones::ofApp::pause";
+    gDetector.releaseAll();
     sphereTones.save();
 }
 
@@ -277,13 +275,11 @@ void ofApp::reloadTextures()
 
 void ofApp::menuItemSelected(int menu_id)
 {
-    //ofLogNotice() << "SphereTones::ofApp::menuItemSelected";
-    //Sampler::setNumOfChannels(menu_id);
+
 }
 
 bool ofApp::menuItemSelected(string menu_id_str)
 {
-    //ofLog(OF_LOG_NOTICE,"menuSelected: %s", menu_id_str.c_str());
     return false;
 }
 

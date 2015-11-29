@@ -124,36 +124,16 @@ void GestureDetector::onDrag(int id, float x, float y)
 
 void GestureDetector::onRelease(int id, float x, float y)
 {
-    // when there was only one finger down, release it
-    if (touchA && !touchB) {
-        if (touchA->id == id) {
-            listener->onRelease(ofVec2f(x, y));
-            delete touchA;
-            touchA = NULL;
-            dragging = false;
-        }
-    }
-    // when there were two fingers, update touchA to be the one remaining
-    else if (touchA && touchB)
-    {
-        if (id == touchA->id)
-        {
-            listener->onRelease(ofVec2f(x, y));
-        	delete touchA;
-        	touchA = NULL;
-        }
-        else if (id == touchB->id)
-        {
-            delete touchB;
-            touchB = NULL;
-        }
-    }
-    if (touchB)
-    {
-    	if (id == touchB->id)
-    	{
-    		delete touchB;
-    		touchB = NULL;
-    	}
-    }
+	if (touchA)
+	{
+		if (touchA->id == id)
+		{
+			listener->onRelease(ofVec2f(x, y));
+		}
+		delete touchA;
+	}
+	touchA = NULL;
+	if (touchB)
+		delete touchB;
+	touchB = NULL;
 };

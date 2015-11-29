@@ -119,11 +119,8 @@ void SphereTones::update()
     updateZoomLevels();
     updateVolumes();
     
-#ifdef TARGET_ANDROID
-    ofSetCircleResolution((int)ofMap(getZoomPercent(), 0, 1, 30, 64, true));
-#else
     ofSetCircleResolution((int)ofMap(getZoomPercent(), 0, 1, 64, 128, true));
-#endif
+
     for (vector<Sphere*>::iterator i = spheres.begin(); i != spheres.end();)
     {
         if ((*i)->alive)
@@ -147,7 +144,7 @@ void SphereTones::update()
 
     infoScreen.update();
     
-    Sampler::updateFilters(getLevel0Percent(), getLevel1Percent(), getLevel2Percent());
+    Sampler::updateFilters(ofClamp(getLevel0Percent() + getLevel1Percent(), 0, 1), getLevel2Percent());
 }
 
 void SphereTones::draw()
@@ -419,6 +416,12 @@ void SphereTones::onTouch(ofVec2f p)
 void SphereTones::onUndoDrag()
 {
     if (currentSphere) currentSphere->onUndoDrag();
+    if (selecting)
+	{
+		selecting = false;
+		sampleSelector.onRelease();
+		selectorTimer.start(0);
+	}
 }
 
 /*

@@ -88,7 +88,9 @@ void SphereElement::update()
 void SphereElement::bang()
 {
     float frequency = getFrequency(note);
-    float speed = frequency / 60.f;
+    float freqScale = 21.8519 * 2.;//ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 50); cout << freqScale << endl;
+    float speed = frequency / freqScale;
+    // magic number here
 
     Sampler::play(sampleId, volume * SphereTones::masterVolume, speed);
 
